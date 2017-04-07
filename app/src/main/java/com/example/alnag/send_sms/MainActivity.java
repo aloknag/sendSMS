@@ -36,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // Capture the PendingIntent which was broadcast in broadcast receiver and do something.
+    // Ex. create a toast message
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -79,12 +82,13 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-
+        // Register the broadcast receivers.
         registerReceiver(smsSentReciever, new IntentFilter(SENT_SMS));
         registerReceiver(smsDeliveredReciever, new IntentFilter(DELIVERED));
 
     }
 
+    // Unregister if we move away from app.
     @Override
     protected void onPause() {
         super.onPause();
@@ -92,6 +96,10 @@ public class MainActivity extends AppCompatActivity {
         unregisterReceiver(smsSentReciever);
         unregisterReceiver(smsDeliveredReciever);
     }
+
+
+    // Function to send SMS. Check's permission if exists else asks for permission and send SMS
+    // Calls pendingIntent which sends a system-wide broadcast message Captured by broadcast receivers.
 
     public void send_sms(View v){
 
