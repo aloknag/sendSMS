@@ -9,12 +9,35 @@
 
     <Button
         android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="153dp"
-        android:layout_marginTop="210dp"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="108dp"
+        android:layout_marginTop="200dp"
         android:onClick="send_sms"
         android:text="Send SMS"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="108dp"
+        android:layout_marginTop="300dp"
+        android:onClick="set_alarm"
+        android:text="Set Alarm"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="199dp"
+        android:layout_height="48dp"
+        android:layout_marginLeft="108dp"
+        android:layout_marginTop="393dp"
+        android:onClick="make_call"
+        android:text="Make Call"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </android.support.constraint.ConstraintLayout>
