@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Send SMS</string>
+    <string name="button3">Send SMS</string>
+    <string name="button4">Set Alarm</string>
+    <string name="button6">Make Call</string>
 </resources>

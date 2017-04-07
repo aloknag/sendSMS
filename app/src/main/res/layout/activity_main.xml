@@ -11,10 +11,11 @@
         android:id="@+id/button3"
         android:layout_width="200dp"
         android:layout_height="50dp"
+        android:layout_marginStart="108dp"
         android:layout_marginLeft="108dp"
         android:layout_marginTop="200dp"
         android:onClick="send_sms"
-        android:text="Send SMS"
+        android:text="@string/button3"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,10 +23,11 @@
         android:id="@+id/button4"
         android:layout_width="200dp"
         android:layout_height="50dp"
+        android:layout_marginStart="108dp"
         android:layout_marginLeft="108dp"
         android:layout_marginTop="300dp"
         android:onClick="set_alarm"
-        android:text="Set Alarm"
+        android:text="@string/button4"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,10 +35,11 @@
         android:id="@+id/button6"
         android:layout_width="199dp"
         android:layout_height="48dp"
+        android:layout_marginStart="108dp"
         android:layout_marginLeft="108dp"
         android:layout_marginTop="393dp"
         android:onClick="make_call"
-        android:text="Make Call"
+        android:text="@string/button6"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

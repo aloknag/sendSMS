@@ -33,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
     String DELIVERED = "SMS_Delivered";
     String ALARM_SET = "ALARM_SET";
     String ALARM_OFF = "ALARM_OFF";
-    PendingIntent sentPendingIntent, deliveredPendingIntent, alarmPendingIntent;
-    BroadcastReceiver smsSentReciever, smsDeliveredReciever, alarmBroadcastReceiver;
+    PendingIntent sentPendingIntent, deliveredPendingIntent, alarmPendingIntent, alarmOffPendingIntent;
+    BroadcastReceiver smsSentReciever, smsDeliveredReciever, alarmBroadcastReceiver, alarmOffBroadcastReceiver;
     MediaPlayer mp;
 
     @Override
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         // This pendingIntent will shout out the sent_sms, delivered SMS and ALARM is set message.
         sentPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(SENT_SMS), 0);
         deliveredPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(DELIVERED), 0);
-        alarmPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(ALARM_SET), 0);
+        alarmPendingIntent = PendingIntent.getBroadcast(this, 1099, new Intent(ALARM_SET), 0);
 
 
     }
@@ -103,14 +103,21 @@ public class MainActivity extends AppCompatActivity {
                 Uri alarm_uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
                 mp = MediaPlayer.create(context, alarm_uri);
                 mp.start();
+
+
+                alarmOffPendingIntent = PendingIntent.getBroadcast(MainActivity.this, 1099, new Intent(ALARM_OFF), 0);
+
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-                builder.setDefaults(Notification.DEFAULT_ALL)
+                builder.setAutoCancel(true)
+                        .setDefaults(Notification.DEFAULT_ALL)
                         .setWhen(System.currentTimeMillis())
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setContentText("Alarm Activated")
                         .setContentText("You've reached your destination")
                         .setContentInfo("Info")
                         .setSound(alarm_uri);
+
+                builder.setContentIntent(alarmOffPendingIntent);
 
                 NotificationManager notificationManager = (NotificationManager)
                         context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -119,11 +126,22 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+        alarmOffBroadcastReceiver = new BroadcastReceiver() {
+            Intent OffIntent = new Intent(MainActivity.this, MainActivity.class);
+            PendingIntent pIntent = PendingIntent.getBroadcast(MainActivity.this, 1099, OffIntent, PendingIntent.FLAG_NO_CREATE);
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                alarm.cancel(pIntent);
+            }
+        };
+
 
         // Register the broadcast receivers.
         registerReceiver(smsSentReciever, new IntentFilter(SENT_SMS));
         registerReceiver(smsDeliveredReciever, new IntentFilter(DELIVERED));
         registerReceiver(alarmBroadcastReceiver, new IntentFilter(ALARM_SET));
+        registerReceiver(alarmOffBroadcastReceiver, new IntentFilter(ALARM_OFF));
 
     }
 
@@ -166,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void make_call(View v) {
         Intent phoneIntent  = new Intent(Intent.ACTION_CALL);
-        phoneIntent.setData(Uri.parse("tel:00919739987000"));
+        phoneIntent.setData(Uri.parse("tel:9739987000"));
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) !=
                 PackageManager.PERMISSION_GRANTED) {
