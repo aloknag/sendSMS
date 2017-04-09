@@ -21,6 +21,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -101,14 +102,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onReceive(Context context, Intent intent) {
                 Uri alarm_uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-                mp = MediaPlayer.create(context, alarm_uri);
-                mp.start();
-
 
                 alarmOffPendingIntent = PendingIntent.getBroadcast(MainActivity.this, 1099, new Intent(ALARM_OFF), 0);
 
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
                 builder.setAutoCancel(true)
+                        .setSound(alarm_uri)
                         .setDefaults(Notification.DEFAULT_ALL)
                         .setWhen(System.currentTimeMillis())
                         .setSmallIcon(R.mipmap.ic_launcher)
@@ -122,17 +121,27 @@ public class MainActivity extends AppCompatActivity {
                 NotificationManager notificationManager = (NotificationManager)
                         context.getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.notify(1099, builder.build());
+                mp = MediaPlayer.create(context, alarm_uri);
+                mp.start();
+                System.out.println("Alarm has gone on!");
 
             }
         };
 
         alarmOffBroadcastReceiver = new BroadcastReceiver() {
+
             Intent OffIntent = new Intent(MainActivity.this, MainActivity.class);
             PendingIntent pIntent = PendingIntent.getBroadcast(MainActivity.this, 1099, OffIntent, PendingIntent.FLAG_NO_CREATE);
+
             @Override
             public void onReceive(Context context, Intent intent) {
                 AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                alarm.cancel(pIntent);
+                if (pIntent != null) {
+                    alarm.cancel(pIntent);
+                }
+                else {
+                    mp.stop();
+                }
             }
         };
 
